@@ -1,0 +1,94 @@
+<html>
+<head>
+<!--     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> -->
+    <script type="text/javascript" src="src/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="src/jquery.tokeninput.js"></script>
+    <link rel="stylesheet" href="styles/token-input.css" type="text/css" />
+    <link rel="stylesheet" href="styles/token-input-facebook.css" type="text/css" />
+
+   <script type="text/javascript">
+		
+		//init area
+		function onReady(tokenListAll, tokenListCurrent) {
+			
+			if(tokenListAll.length>0) {
+				var tokenListAll_o = JSON.parse (tokenListAll);
+			}
+			else {
+				var tokenListAll_o = [];
+			}
+			
+			if(tokenListCurrent.length>0) {
+				var tokenListCurrent_o = JSON.parse (tokenListCurrent);
+			}
+			else {
+				var tokenListCurrent_o = [];
+			}
+			
+			$("#demo-input-local").tokenInput(
+				tokenListAll_o,
+				{
+					theme: "facebook",
+					hintText: "",
+					searchDelay: 2,
+					noResultsText: "Nichts gefunden",
+					searchingText: "Suche...",
+					minChars: 1,
+					tokenLimit: 99,
+// 					tokenDelimiter: "|",
+					preventDuplicates: true,
+					animateDropdown: true,
+					
+					onAdd: function (item) {
+						sendTokenList();
+					},
+					
+					onDelete: function (item){
+						sendTokenList();
+					}
+				}
+		);
+
+			for(var i=0; i < tokenListCurrent_o.length; i++) {
+        		$("#demo-input-local").tokenInput("add", tokenListCurrent_o[i]);
+			}
+
+//  			$("#demo-input-local").tokenInput("setFocus");
+        	
+		}
+	
+		function sendTokenList() {
+			var tokenList = $("#demo-input-local").tokenInput("get");
+			$4d.tagEditor_ReceiveTagList(JSON.stringify(tokenList));
+		}
+	
+		function clearAll() {
+			var tokenList = $("#demo-input-local").tokenInput("get");
+			$("#demo-input-local").tokenInput("clear");
+			sendTokenList();
+		}
+
+
+		function selectInput() {
+			$("#demo-input-local").tokenInput("setFocus");
+		}
+		
+	</script>
+	
+	
+</head>
+
+<body>
+    <div>
+        <input type="text" id="demo-input-local" name="blah" />
+<!-- 
+        <script type="text/javascript">
+        $(document).ready(function() {
+        	onReady('[{"id": 1, "name": "Ruby"},{"id": 2, "name": "Java"},{"id": 3, "name": "Python"}]', '[{"id": 2, "name": "Java"}]');
+       });
+        </script>
+ -->
+    </div>
+
+</body>
+</html>
